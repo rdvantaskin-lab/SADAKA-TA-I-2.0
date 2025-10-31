@@ -1,0 +1,201 @@
+:root {
+    --primary-color: #00A79D; /* Yeşil tonu */
+    --background-color: #f4f7f6;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --subtitle-color: #777777;
+    --border-color: #e0e0e0;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--subtitle-color);
+    margin-bottom: 40px;
+}
+
+.main-content {
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    flex-grow: 1;
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.card .subtitle {
+    font-size: 0.9rem;
+    color: var(--subtitle-color);
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+/* Sol Panel: Bağış */
+.donation-panel {
+    flex-basis: 50%;
+}
+
+.qr-code-placeholder {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.qr-code-placeholder img {
+    width: 120px;
+    height: 120px;
+}
+
+.preset-amounts {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.preset-btn {
+    background-color: #f0f0f0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.preset-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.custom-amount-wrapper {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--subtitle-color);
+}
+
+#amountInput {
+    width: 100%;
+    padding: 15px 15px 15px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.donate-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.donate-btn:hover {
+    background-color: #008c82;
+}
+
+/* Sağ Sütun */
+.right-column {
+    flex-basis: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* İhtiyaç Paneli */
+.icon-placeholder {
+    padding: 20px;
+    margin: 10px auto 15px;
+    background-color: #f0f8ff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon-placeholder svg {
+    color: var(--primary-color);
+}
+
+/* Şeffaflık Paneli */
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--subtitle-color);
+    margin-top: 5px;
+}

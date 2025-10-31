@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadaka Taşı 2.0</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .reset-btn {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .reset-btn:hover {
+            background-color: #c9302c;
+        }
+        .preset-btn.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Sadaka Taşı 2.0</h1>
+            <p>Geçmişin bilgeliği, geleceğin teknolojisiyle buluştu.</p>
+        </header>
+
+        <main class="main-content">
+            <div class="card donation-panel">
+                <h2>İyilik Yapmanın Kolay Yolu</h2>
+                <p class="subtitle">QR kodu okutun veya dilediğiniz miktarı seçin.</p>
+                
+                <div class="qr-code-placeholder">
+                    <img src="https://i.hizliresim.com/lvih8ur.png" alt="Bağış QR Kodu">
+                    <span>Bağış QR Kodu</span>
+                </div>
+
+                <div class="preset-amounts">
+                    <button class="preset-btn" data-amount="20">20 ₺</button>
+                    <button class="preset-btn" data-amount="50">50 ₺</button>
+                    <button class="preset-btn" data-amount="100">100 ₺</button>
+                </div>
+
+                <div class="custom-amount-wrapper">
+                    <span class="currency-symbol">₺</span>
+                    <input type="number" id="amountInput" placeholder="TEŞEKKÜRLER İSTEKLİ " step="0.01">
+                </div>
+
+                <button id="donateButton" class="donate-btn">Güvenle Bağış Yap</button>
+            </div>
+
+            <div class="right-column">
+                <div class="card request-panel">
+                    <h2>İhtiyacınızı Sessizce Belirtin</h2>
+                    <p class="subtitle">Anlaşmalı noktalardaki QR kodu okutarak kimliğinizi gizli tutarak sistemimize talebinizi iletebilirsiniz.</p>
+                    <div class="icon-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <span>Talep QR Kodu</span>
+                </div>
+
+                <div class="card transparency-panel">
+                    <h2>Şeffaflık Paneli</h2>
+                    <div class="stats-container">
+                        <div class="stat-item">
+                            <span id="totalDonation" class="stat-value">0 ₺</span>
+                            <span class="stat-label">Toplam Bağış</span>
+                        </div>
+                        <div class="stat-item">
+                            <span id="needsMet" class="stat-value">0</span>
+                            <span class="stat-label">Destek Sayısı</span>
+                        </div>
+                    </div>
+                    <button id="resetStatsButton" class="reset-btn">İstatistikleri Sıfırla</Hızlı>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const NEED_THRESHOLD = 264; 
+
+            const totalDonationEl = document.getElementById('totalDonation');
+            const needsMetEl = document.getElementById('needsMet');
+            const donateButton = document.getElementById('donateButton');
+            const amountInput = document.getElementById('amountInput');
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            const resetStatsButton = document.getElementById('resetStatsButton');
+
+            function loadStats() {
+                let total = parseFloat(localStorage.getItem('sadakaTasi_totalDonation') || 0);
+                let count = Math.floor(total / NEED_THRESHOLD); 
+                
+                updateUI(total, count);
+                saveStats(total, count);
+            }
+
+            function updateUI(total, count) {
+                totalDonationEl.textContent = `${total.toLocaleString('tr-TR', { minimumFractionDigits: 2 })} ₺`;
+                needsMetEl.textContent = count;
+            }
+
+            function saveStats(total, count) {
+                localStorage.setItem('sadakaTasi_totalDonation', total);
+                localStorage.setItem('sadakaTasi_needsMet', count);
+            }
+
+            donateButton.addEventListener('click', () => {
+                const amount = parseFloat(amountInput.value);
+
+                if (isNaN(amount) || amount <= 0) {
+                    alert('Lütfen geçerli bir bağış miktarı girin.');
+                    return;
+                }
+                
+                let currentTotal = parseFloat(localStorage.getItem('sadakaTasi_totalDonation') || 0);
+                currentTotal += amount;
+                
+                const newCount = Math.floor(currentTotal / NEED_THRESHOLD);
+
+                saveStats(currentTotal, newCount);
+                updateUI(currentTotal, newCount);
+
+                amountInput.value = '';
+                alert('Bağışınız için teşekkür ederiz!');
+                
+                removeActivePreset();
+            });
+
+            resetStatsButton.addEventListener('click', () => {
+                if (confirm('Emin misiniz? Tüm bağış istatistikleri kalıcı olarak sıfırlanacak.')) {
+                    saveStats(0, 0);
+                    updateUI(0, 0);
+                    alert('İstatistikler sıfırlandı.');
+                }
+            });
+
+            presetButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    removeActivePreset();
+                    button.classList.add('active');
+                    const amount = button.getAttribute('data-amount');
+                    amountInput.value = amount;
+                });
+            });
+            
+            function removeActivePreset() {
+                presetButtons.forEach(btn => btn.classList.remove('active'));
+            }
+            
+            amountInput.addEventListener('input', removeActivePreset);
+
+            loadStats();
+        });
+    </script>
+
+</body>
+</html>
